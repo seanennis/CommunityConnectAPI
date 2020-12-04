@@ -1,0 +1,13 @@
+communityconnect\controller\MemberController.class
+communityconnect\Main.class
+communityconnect\repository\MeetingRepo.class
+communityconnect\repository\MemberRepo.class
+communityconnect\service\MeetingService.class
+communityconnect\entity\Member.class
+communityconnect\exception\ApiRequestException.class
+communityconnect\controller\MeetingController.class
+communityconnect\entity\Timeslot.class
+communityconnect\exception\ApiExceptionHandler.class
+communityconnect\exception\ApiException.class
+communityconnect\service\MemberService.class
+communityconnect\entity\Meeting.class
