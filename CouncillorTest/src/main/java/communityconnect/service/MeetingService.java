@@ -70,6 +70,7 @@ public class MeetingService {
         meetingRepo.save(newMeeting);
     }
 
+    //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
     public void deleteAllMeetings() {
         this.meetingRepo.deleteAll();
     }

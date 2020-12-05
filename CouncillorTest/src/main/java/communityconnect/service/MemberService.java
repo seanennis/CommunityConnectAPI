@@ -2,8 +2,10 @@ package communityconnect.service;
 
 import communityconnect.entity.Meeting;
 import communityconnect.entity.Member;
+import communityconnect.entity.MemberLogin;
 import communityconnect.exception.ApiRequestException;
 import communityconnect.repository.MeetingRepo;
+import communityconnect.repository.MemberLoginRepo;
 import communityconnect.repository.MemberRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,9 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,19 +25,32 @@ import java.util.stream.Collectors;
 public class  MemberService {
     private final MemberRepo memberRepo;
     private final MeetingRepo meetingRepo;
+    private final MemberLoginRepo memberLoginRepo;
 
     @Autowired
-    public MemberService(@Qualifier("MemberRepo") MemberRepo memberRepo, @Qualifier("MeetingRepo") MeetingRepo meetingRepo) {
+    public MemberService(@Qualifier("MemberRepo") MemberRepo memberRepo, @Qualifier("MeetingRepo") MeetingRepo meetingRepo,
+                         @Qualifier("MemberLoginRepo") MemberLoginRepo memberLoginRepo) {
         this.memberRepo = memberRepo;
         this.meetingRepo = meetingRepo;
+        this.memberLoginRepo = memberLoginRepo;
     }
 
-    public void insertMember(Member member) {
+    public Map<String, String> insertMember(Member member) {
         if(this.memberRepo.findByName(member.getName()).isPresent())
             throw new ApiRequestException("There is already a member by this name," +
                     " try using a put request if you wish to edit this member");
-        else
-            this.memberRepo.insert(member);
+
+        this.memberRepo.insert(member);
+        Optional<Member> newMember = this.memberRepo.findByName(member.getName());
+        String username = member.getName().toLowerCase().replaceAll("\\s", "").replaceAll("'", "");
+        String password = randomPassword(8);
+        MemberLogin memberLogin = new MemberLogin(username, newMember.get().getId(), password);
+        this.memberLoginRepo.insert(memberLogin);
+
+        HashMap<String, String> credentials = new HashMap<>();
+        credentials.put("Username", username);
+        credentials.put("Password", password);
+        return credentials;
     }
 
     public List<Member> getAll() {
@@ -74,6 +87,7 @@ public class  MemberService {
         memberRepo.save(newMember);
     }
 
+    //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
     public void deleteAllMembers() {
         this.memberRepo.deleteAll();
     }
@@ -154,5 +168,16 @@ public class  MemberService {
         }
 
         return closedMeetings;
+    }
+
+    public static String randomPassword(int len) {
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random rnd = new Random();
+
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 }

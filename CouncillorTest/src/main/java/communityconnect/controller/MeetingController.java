@@ -63,6 +63,7 @@ public class MeetingController {
         this.meetingService.deleteMeetingByName(name);
     }
 
+    //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
     @DeleteMapping(path = "/clearAll")
     public void deleteAllMeetings() {
         this.meetingService.deleteAllMeetings();

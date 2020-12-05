@@ -21,10 +21,6 @@ public class Member {
     final private String position; // councillor, TD, senator
     @NotBlank
     final private String name;
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String password;
     // Array contains 7 lists for each of the 7 days of the week (monday == 0; Sunday == 6)
     // floats represent start time of available meeting times on the hour (24 hour clock)
     // number after decimal place represents meeting type
@@ -32,6 +28,7 @@ public class Member {
     private ArrayList<Float>[] timeslots;
     private ArrayList<Float>[] defaultTimeslots;
     private ArrayList<String> meetingIDs;
+    private boolean active;
 
     public Member(@JsonProperty("position") String position,
                   @JsonProperty("name") String name,
@@ -40,8 +37,7 @@ public class Member {
         this.name = name;
         this.timeslots = timeslots;
         this.defaultTimeslots = timeslots;
-        this.username = name.toLowerCase().replaceAll("\\s", "").replaceAll("'", "");
-        this.password = randomPassword(8);
+        this.active = false;
     }
 
     public String getId() {
@@ -75,12 +71,7 @@ public class Member {
     public void bookTimeslot(int days, int index, float type) {
         timeslots[days].set(index, (float)Math.round(timeslots[days].get(index) - type/10));
     }
-    public String getUsername() {
-        return username;
-    }
-    public String getPassword() {
-        return password;
-    }
+
     public ArrayList<String> getMeetingIDs() {
         return meetingIDs;
     }
@@ -97,28 +88,20 @@ public class Member {
         this.defaultTimeslots = defaultTimeslots;
     }
 
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public void setDefaultTimeslots(ArrayList<Float>[] defaultTimeslots) {
         this.defaultTimeslots = defaultTimeslots;
     }
 
-    public static String randomPassword(int len) {
-        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Random rnd = new Random();
+    public void addMeetingID(String meetingId) {
+        meetingIDs.add(meetingId);
+    }
 
-        StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            sb.append(AB.charAt(rnd.nextInt(AB.length())));
-        }
-        return sb.toString();
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
 

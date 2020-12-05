@@ -2,6 +2,7 @@ package communityconnect.controller;
 
 import communityconnect.entity.Meeting;
 import communityconnect.entity.Member;
+import communityconnect.entity.MemberLogin;
 import communityconnect.entity.Timeslot;
 import communityconnect.exception.ApiRequestException;
 import communityconnect.service.MemberService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for end points involving the member collection of the Community Connect database.
@@ -29,8 +31,8 @@ public class MemberController {
     }
 
     @PostMapping
-    public void insertMember(@Valid @NonNull @RequestBody Member member) {
-        this.memberService.insertMember(member);
+    public Map<String, String> insertMember(@Valid @NonNull @RequestBody Member member) {
+        return this.memberService.insertMember(member);
     }
 
     @GetMapping
@@ -51,6 +53,21 @@ public class MemberController {
         return member.getTimeslots();
     }
 
+    @PutMapping(path = "/active/{id}")
+    public void isActive(@PathVariable("id") String id) {
+        Member member = this.memberService.getMemberById(id).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this ID"));
+        member.setActive(true);
+        this.memberService.updateMember(id, member);
+    }
+
+    @GetMapping(path = "/active/{id}")
+    public Boolean getIsActive(@PathVariable("id") String id) {
+        Member member = this.memberService.getMemberById(id).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this ID"));
+        return member.isActive();
+    }
+
     @DeleteMapping(path = "/id/{id}")
     public void deleteMemberById(@PathVariable("id") String id) {
         this.memberService.deleteMember(id);
@@ -62,6 +79,14 @@ public class MemberController {
                 new ApiRequestException("Cannot find member with this ID"));
         member.setTimeslots(oldMember.getTimeslots());
         member.setDefaultTimeslots(oldMember.getDefaultTimeslots(), member);
+        this.memberService.updateMember(id, member);
+    }
+
+    @PutMapping(path = "/meetingid/{id}")
+    public void addMeetingId(@RequestBody String meetingId, @PathVariable("id") String id) {
+        Member member = this.memberService.getMemberById(id).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this ID"));
+        member.addMeetingID(meetingId);
         this.memberService.updateMember(id, member);
     }
 
@@ -99,6 +124,7 @@ public class MemberController {
         this.memberService.deleteMemberByName(name);
     }
 
+    //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
     @DeleteMapping(path = "/clearAll")
     public void deleteAllMembers() {
         this.memberService.deleteAllMembers();
