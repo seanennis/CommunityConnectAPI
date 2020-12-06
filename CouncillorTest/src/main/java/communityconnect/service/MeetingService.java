@@ -70,6 +70,22 @@ public class MeetingService {
         meetingRepo.save(newMeeting);
     }
 
+    public Optional<ArrayList<Meeting>> getMeetingByMemberID(String memberID) {
+        return this.meetingRepo.findByMemberId(memberID);
+    }
+
+    public void deleteMeetingByMemberID(String memberID) {
+        this.meetingRepo.deleteByMemberId(memberID);
+    }
+
+    public Optional<ArrayList<Meeting>> getMeetingByMemberIDandDatetime(String memberID, String dateTime) {
+        return this.meetingRepo.findByMemberIdAndDateTime(memberID, dateTime);
+    }
+
+    public void deleteMeetingByMemberIDandDatetime(String memberID, String dateTime) {
+        this.meetingRepo.deleteByMemberIdAndDateTime(memberID, dateTime);
+    }
+
     //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
     public void deleteAllMeetings() {
         this.meetingRepo.deleteAll();

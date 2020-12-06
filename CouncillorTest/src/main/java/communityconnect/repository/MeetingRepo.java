@@ -20,5 +20,11 @@ public interface MeetingRepo extends MongoRepository<Meeting, String> {
 
     Optional<ArrayList<Meeting>> findByMemberId(String memberId);
 
+    Optional<ArrayList<Meeting>> findByMemberIdAndDateTime(String memberId, String dateTime);
+
     void deleteByName(String name);
+
+    void deleteByMemberId(String memberId);
+
+    void deleteByMemberIdAndDateTime(String memberId, String dateTime);
 }

@@ -7,7 +7,13 @@ communityconnect\entity\Member.class
 communityconnect\exception\ApiRequestException.class
 communityconnect\controller\MeetingController.class
 communityconnect\entity\Timeslot.class
+communityconnect\service\MemberLoginService.class
+communityconnect\repository\MemberLoginRepo.class
 communityconnect\exception\ApiExceptionHandler.class
 communityconnect\exception\ApiException.class
 communityconnect\service\MemberService.class
+communityconnect\security\SecurityConf.class
+communityconnect\controller\MemberLoginController.class
+communityconnect\entity\MemberLogin.class
+communityconnect\service\MongoMemberDetailsService.class
 communityconnect\entity\Meeting.class

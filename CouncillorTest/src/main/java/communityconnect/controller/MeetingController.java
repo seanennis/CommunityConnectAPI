@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,6 +62,28 @@ public class MeetingController {
     @DeleteMapping(path = "/name/{name}")
     public void deleteMeetingByName(@PathVariable("name") String name) {
         this.meetingService.deleteMeetingByName(name);
+    }
+
+    @GetMapping(path = "/memberID/{memberID}")
+    public ArrayList<Meeting> getMeetingByMemberID(@PathVariable("memberID") String memberID) {
+        return this.meetingService.getMeetingByMemberID(memberID).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this name"));
+    }
+
+    @DeleteMapping(path = "/memberID/{memberID}")
+    public void deleteMeetingByMemberID(@PathVariable("memberID") String memberID) {
+        this.meetingService.deleteMeetingByMemberID(memberID);
+    }
+
+    @GetMapping(path = "/IDandDatetime/{memberID}/{dateTime}")
+    public ArrayList<Meeting> getMeetingByIDandDate(@PathVariable("memberID") String memberID, @PathVariable("dateTime") String dateTime) {
+        return this.meetingService.getMeetingByMemberIDandDatetime(memberID, dateTime).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this name"));
+    }
+
+    @DeleteMapping(path = "/IDandDatetime/{memberID}/{dateTime}")
+    public void deleteMeetingByName(@PathVariable("memberID") String memberID, @PathVariable("dateTime") String dateTime) {
+        this.meetingService.deleteMeetingByMemberIDandDatetime(memberID, dateTime);
     }
 
     //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
