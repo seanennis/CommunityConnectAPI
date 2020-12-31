@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controller for end points involving the booking collection of the Community Connect database.
@@ -84,6 +85,16 @@ public class MeetingController {
     @DeleteMapping(path = "/IDandDatetime/{memberID}/{dateTime}")
     public void deleteMeetingByName(@PathVariable("memberID") String memberID, @PathVariable("dateTime") String dateTime) {
         this.meetingService.deleteMeetingByMemberIDandDatetime(memberID, dateTime);
+    }
+
+    @GetMapping(path = "/dateAndStatus/{date}/{status}")
+    public Optional<ArrayList<Meeting>> getMeetingStatusandDate(@PathVariable("date") String date, @PathVariable("status") int status) {
+        return this.meetingService.getMeetingByStatusAndDate(status, date);
+    }
+
+    @DeleteMapping(path = "/dateAndStatus/{date}/{status}")
+    public void deleteMeetingStatusandDate(@PathVariable("date") String date, @PathVariable("status") int status) {
+        this.meetingService.deleteMeetingByStatusAndDate(status, date);
     }
 
     //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE

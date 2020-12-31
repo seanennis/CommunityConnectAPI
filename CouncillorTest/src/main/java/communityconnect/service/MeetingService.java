@@ -142,4 +142,12 @@ public class MeetingService {
                 meetingRepo.deleteById(meeting.getId());
         }
     }
+
+    public Optional<ArrayList<Meeting>> getMeetingByStatusAndDate(int status, String date) {
+        return meetingRepo.findByStatusAndDate(status, date);
+    }
+
+    public void deleteMeetingByStatusAndDate(int status, String date) {
+        meetingRepo.deleteByStatusAndDate(status, date);
+    }
 }

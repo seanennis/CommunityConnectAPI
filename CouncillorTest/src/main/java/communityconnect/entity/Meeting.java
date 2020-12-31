@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Entity describing a meeting document for the Community Connect Mongo database.
@@ -18,6 +20,8 @@ public class Meeting {
     private String id;
     @NotBlank
     private final String dateTime;
+    @NotBlank
+    private String date;
     @NonNull
     private final int type; // 1->In Person; 2->Phone; 3->Video Call
     @NonNull
@@ -45,6 +49,8 @@ public class Meeting {
         this.email = email;
         this.memberId = memberId;
         this.location = location;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.date = formatter.format(LocalDateTime.parse(dateTime));
     }
 
     public String getId() {
@@ -89,5 +95,13 @@ public class Meeting {
 
     public String getMemberId() {
         return memberId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
