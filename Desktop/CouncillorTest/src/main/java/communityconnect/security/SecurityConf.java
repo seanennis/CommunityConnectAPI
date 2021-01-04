@@ -1,2 +1,4 @@
-package communityconnect.security;public class SecurityConf {
+package communityconnect.security;
+
+public class SecurityConf {
 }

@@ -11,14 +11,29 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.CouncillorApp</groupId>
-    <artifactId>CouncillorAppSB</artifactId>
+    <groupId>CommunityConnect</groupId>
+    <artifactId>community-connect-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>3.2.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>3.2.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
