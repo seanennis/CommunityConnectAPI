@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,8 @@ public class  MemberService {
     }
 
     public Map<String, String> insertMember(Member member) {
+        if(member.getDefaultTimeslots().length != 7)
+            throw new ApiRequestException("Length of defaultTimeslots must equal 7");
         if(this.memberRepo.findByName(member.getName()).isPresent())
             throw new ApiRequestException("There is already a member by this name," +
                     " try using a put request if you wish to edit this member");
@@ -97,18 +100,18 @@ public class  MemberService {
     @Scheduled(cron = "5 0 0 * * ?", zone = "Europe/Dublin")
     public void renewCalender() {
         ArrayList<Member> members = (ArrayList<Member>) this.memberRepo.findAll();
-        // yesterdays date
-        int index = LocalDateTime.now().getDayOfWeek().getValue() - 2;
-
         for(Member member : members) {
-            member.setTimeslotsDay(member.getDefaultTimeslots()[index], index);
+            member.updateTimeslots();
             memberRepo.save(member);
         }
     }
 
     // changes times in timeslot of bookings which have not been cancelled to .0 to prevent double bookings
     // returns updated timeslot
-    public ArrayList<Float>[] updateTimeslots(ArrayList<Float>[] timeslots, Member member) {
+    public HashMap<String, ArrayList<Float>> updateTimeslots(ArrayList<Float>[] defaultTimeslots, Member member) {
+        // generate timeslots for the next 4 weeks
+        HashMap<String, ArrayList<Float>> newTimeslots = member.generateTimeslots(defaultTimeslots);
+        // find all meetings with this member
         Optional<ArrayList<Meeting>> meetings = meetingRepo.findByMemberId(member.getId());
         ArrayList<Meeting> meetingsList;
 
@@ -117,26 +120,19 @@ public class  MemberService {
         else
             return null;
 
+        // update newTimeslots to include these meetings
         for(Meeting meeting : meetingsList) {
             LocalDateTime dateTime = LocalDateTime.parse(meeting.getDateTime());
-            int dayOfWeek = dateTime.getDayOfWeek().getValue() - 1;
-            for(int i = 21; i >= 7; i -= 7) {
-                if (dateTime.isAfter(LocalDateTime.now().plusDays(i - 1))) {
-                    dayOfWeek += i;
-                    break;
-                }
-            }
 
             List<Integer> intTimeslots =
-                    timeslots[dayOfWeek].stream().map(Float::intValue).collect(Collectors.toList());
+                    newTimeslots.get(meeting.getDate()).stream().map(Float::intValue).collect(Collectors.toList());
             if(intTimeslots.contains(dateTime.getHour())) {
                 int index = intTimeslots.indexOf(dateTime.getHour());
-                timeslots[dayOfWeek].set(index, (float)dateTime.getHour());
+                newTimeslots.get(meeting.getDate()).set(index, (float)dateTime.getHour());
             }
         }
 
-
-        return timeslots;
+        return newTimeslots;
     }
 
     // returns all meetings which have been cancelled as a result of the timeslot changes
@@ -153,12 +149,6 @@ public class  MemberService {
         for(Meeting meeting : meetingsList) {
             LocalDateTime dateTime = LocalDateTime.parse(meeting.getDateTime());
             int dayOfWeek = dateTime.getDayOfWeek().getValue() - 1;
-            for(int i = 21; i >= 7; i -= 7) {
-                if (dateTime.isAfter(LocalDateTime.now().plusDays(i - 1))) {
-                    dayOfWeek += i;
-                    break;
-                }
-            }
 
             List<Integer> intTimeslots =
                     timeslots[dayOfWeek].stream().map(Float::intValue).collect(Collectors.toList());

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -95,21 +96,14 @@ public class MeetingService {
         LocalDateTime dateTime = LocalDateTime.parse(meeting.getDateTime());
         Optional<Member> member = Optional.ofNullable(memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
                 new ApiRequestException("The member ID with whom this meeting is booked does not exist")));
-        ArrayList<Float>[] timeslots = member.get().getTimeslots();
-        int dayOfWeek = dateTime.getDayOfWeek().getValue() - 1;
-        for(int i = 21; i >= 7; i -= 7) {
-            if (dateTime.isAfter(LocalDateTime.now().plusDays(i - 1))) {
-                dayOfWeek += i;
-                break;
-            }
-        }
+        HashMap<String, ArrayList<Float>> timeslots = member.get().getTimeslots(); // already checked if null above
         // strip meeting type held in decimal portion of floats by converting to int
-        List<Integer> intTimeslots = timeslots[dayOfWeek].stream().map(Float::intValue).collect(Collectors.toList());
+        List<Integer> intTimeslots = timeslots.get(meeting.getDate()).stream().map(Float::intValue).collect(Collectors.toList());
         int dateTimeIndex = intTimeslots.indexOf(dateTime.getHour());
         boolean correctMeetingType = false;
 
-        // within 14 days from now
-        if(dateTime.isBefore(LocalDateTime.now()) || dateTime.isAfter(LocalDateTime.now().plusWeeks(4)))
+        // within 28 days from now
+        if(dateTime.isBefore(LocalDateTime.now()) || dateTime.isAfter(LocalDateTime.now().plusDays(27)))
             throw new ApiRequestException("The meeting date is outside of the 28 day window");
 
         // If time slot is not in the array
@@ -117,13 +111,13 @@ public class MeetingService {
             throw new ApiRequestException("This meeting timeslot is not available");
 
         // set correct meeting type (4 represents all meeting types)
-        int type = Math.round((timeslots[dayOfWeek].get(dateTimeIndex)-dateTime.getHour())*10);
+        int type = Math.round((timeslots.get(meeting.getDate()).get(dateTimeIndex)-dateTime.getHour())*10);
         if(meeting.getType() == type || 4 == type)
             correctMeetingType = true;
 
         // time slot is present and available for meeting type
         if(intTimeslots.contains(dateTime.getHour()) && correctMeetingType) {
-            member.get().bookTimeslot(dayOfWeek, dateTimeIndex, (float)type);
+            member.get().bookTimeslot(meeting.getDate(), dateTimeIndex, (float)type);
             memberRepo.save(member.get());
         }
         else

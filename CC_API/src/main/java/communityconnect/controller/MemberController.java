@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class MemberController {
     }
 
     @GetMapping(path = "/timeslots/id/{id}")
-    public ArrayList<Float>[] getTimeslotsById(@PathVariable("id") String id) {
+    public HashMap<String, ArrayList<Float>> getTimeslotsById(@PathVariable("id") String id) {
         Member member = this.memberService.getMemberById(id).orElseThrow(() ->
                 new ApiRequestException("Cannot find member with this ID"));
         return member.getTimeslots();
@@ -91,16 +92,15 @@ public class MemberController {
     }
 
     @PutMapping(path = "/timeslots/id/{id}")
-    public ArrayList<Meeting> updateTimeslotsById(@RequestBody Timeslot timeslots, @PathVariable("id") String id) {
+    public ArrayList<Meeting> updateDefaultTimeslotsById(@RequestBody Timeslot timeslots, @PathVariable("id") String id) {
+        if(timeslots.getTimeslots().length != 7)
+            throw new ApiRequestException("The length of the timeslot array must equal 7");
         Member member = this.memberService.getMemberById(id).orElseThrow(() ->
                 new ApiRequestException("Cannot find member with this ID"));
-        ArrayList<Float>[] newTimeslots = memberService.updateTimeslots(timeslots.getTimeslots(), member);
+        HashMap<String, ArrayList<Float>> newTimeslots = memberService.updateTimeslots(timeslots.getTimeslots(), member);
         ArrayList<Meeting> closedMeetings = memberService.findOverwrittenMeetings(timeslots.getTimeslots(), member);
-        if(newTimeslots != null)
-            member.setTimeslots(newTimeslots);
-        else   // if no meetings are booked change timeslots as usual
-            member.setTimeslots(timeslots.getTimeslots());
-        member.setDefaultTimeslots(timeslots.getTimeslots(), member);
+        member.setTimeslots(newTimeslots);
+        member.setDefaultTimeslots(timeslots.getTimeslots());
         this.memberService.updateMember(id, member);
         
         return closedMeetings;
@@ -113,7 +113,7 @@ public class MemberController {
     }
 
     @GetMapping(path = "/timeslots/name/{name}")
-    public ArrayList<Float>[] getTimeslotsByName(@PathVariable("name") String name) {
+    public HashMap<String, ArrayList<Float>> getTimeslotsByName(@PathVariable("name") String name) {
         Member member = this.memberService.getMemberByName(name).orElseThrow(() ->
                 new ApiRequestException("Cannot find member with this ID"));
         return member.getTimeslots();
