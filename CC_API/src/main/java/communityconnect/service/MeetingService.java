@@ -94,6 +94,10 @@ public class MeetingService {
 
     public boolean isValid(Meeting meeting) {
         LocalDateTime dateTime = LocalDateTime.parse(meeting.getDateTime());
+        // within 28 days from now
+        if(dateTime.isBefore(LocalDateTime.now()) || dateTime.isAfter(LocalDateTime.now().plusDays(27)))
+            throw new ApiRequestException("The meeting date is outside of the 28 day window");
+
         Optional<Member> member = Optional.ofNullable(memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
                 new ApiRequestException("The member ID with whom this meeting is booked does not exist")));
         HashMap<String, ArrayList<Float>> timeslots = member.get().getTimeslots(); // already checked if null above
@@ -101,10 +105,6 @@ public class MeetingService {
         List<Integer> intTimeslots = timeslots.get(meeting.getDate()).stream().map(Float::intValue).collect(Collectors.toList());
         int dateTimeIndex = intTimeslots.indexOf(dateTime.getHour());
         boolean correctMeetingType = false;
-
-        // within 28 days from now
-        if(dateTime.isBefore(LocalDateTime.now()) || dateTime.isAfter(LocalDateTime.now().plusDays(27)))
-            throw new ApiRequestException("The meeting date is outside of the 28 day window");
 
         // If time slot is not in the array
         if(dateTimeIndex == -1)

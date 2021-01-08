@@ -23,16 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8da3ba8-fe78-4d32-8725-62fd1e5d41c5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CC_API.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Member.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/service/MeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/service/MeetingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/service/MemberService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

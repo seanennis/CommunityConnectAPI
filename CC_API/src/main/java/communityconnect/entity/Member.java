@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Entity describing a member document for the Community Connect Mongo database.
@@ -36,11 +35,11 @@ public class Member {
 
     public Member(@JsonProperty("position") String position,
                   @JsonProperty("name") String name,
-                  @JsonProperty("timeslots") ArrayList<Float>[] timeslots) {
+                  @JsonProperty("defaultTimeslots") ArrayList<Float>[] defaultTimeslots) {
         this.position = position;
         this.name = name;
-        this.defaultTimeslots = timeslots;
-        this.timeslots = generateTimeslots(timeslots);
+        this.defaultTimeslots = defaultTimeslots;
+        this.timeslots = generateTimeslots(defaultTimeslots);
         this.active = false;
     }
 
