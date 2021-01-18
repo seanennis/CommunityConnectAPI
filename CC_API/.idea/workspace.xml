@@ -24,8 +24,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a8da3ba8-fe78-4d32-8725-62fd1e5d41c5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/controller/MeetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/controller/MeetingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Meeting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Meeting.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Member.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/service/MeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/service/MeetingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/communityconnect/entity/Member.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/communityconnect/entity/Member.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,5 +77,15 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1610998987094">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1610998987094" />
+    <state x="338" y="422" width="433" height="218" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1611002057330">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="338" y="422" width="433" height="218" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1040@0.0.1920.1040" timestamp="1611002057330" />
   </component>
 </project>

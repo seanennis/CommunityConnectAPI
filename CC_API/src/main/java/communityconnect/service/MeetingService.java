@@ -126,6 +126,35 @@ public class MeetingService {
         return true;
     }
 
+    public Optional<ArrayList<Meeting>> getMeetingByStatusAndDate(int status, String date) {
+        return meetingRepo.findByStatusAndDate(status, date);
+    }
+
+    public void deleteMeetingByStatusAndDate(int status, String date) {
+        meetingRepo.deleteByStatusAndDate(status, date);
+    }
+
+    public void updateMeetingStatus(String id, int status) {
+        Meeting meeting = this.meetingRepo.findById(id).orElseThrow(() ->
+                new ApiRequestException("Cannot find meeting with this ID"));
+        meeting.setStatus(status);
+        meetingRepo.save(meeting);
+
+        // if meeting is rejected, frees up timeslot
+        if(status == 2) {
+            Member member = this.memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
+                    new ApiRequestException("Cannot find member with this ID"));
+            String date = meeting.getDate();
+            ArrayList<Float> times = member.getTimeslots().get(date);
+            List<Integer> intTimes = times.stream().map(Float::intValue).collect(Collectors.toList());
+            LocalDateTime dateTime = LocalDateTime.parse(meeting.getDateTime());
+            int index = intTimes.indexOf(dateTime.getHour());
+            int day = dateTime.getDayOfWeek().getValue() - 1;
+            member.unbookTimeslot(date, index, day);
+            memberRepo.save(member);
+        }
+    }
+
     // run daily at 12am
     @Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Dublin")
     public void removeOldMeetings() {
@@ -135,13 +164,5 @@ public class MeetingService {
             if(LocalDateTime.now().isAfter(LocalDateTime.parse(meeting.getDateTime())))
                 meetingRepo.deleteById(meeting.getId());
         }
-    }
-
-    public Optional<ArrayList<Meeting>> getMeetingByStatusAndDate(int status, String date) {
-        return meetingRepo.findByStatusAndDate(status, date);
-    }
-
-    public void deleteMeetingByStatusAndDate(int status, String date) {
-        meetingRepo.deleteByStatusAndDate(status, date);
     }
 }

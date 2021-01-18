@@ -25,7 +25,7 @@ public class Meeting {
     @NonNull
     private final int type; // 1->In Person; 2->Phone; 3->Video Call
     @NonNull
-    private final int status; // 0->Unbooked; 1->Accepted; 2->Declined; 3->Pending; 4->Disabled
+    private int status; // 0->Unbooked; 1->Accepted; 2->Declined; 3->Pending; 4->Disabled
     @NotBlank
     private String name;
     @NotBlank
@@ -71,6 +71,10 @@ public class Meeting {
 
     public int getStatus() {
         return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getName() {

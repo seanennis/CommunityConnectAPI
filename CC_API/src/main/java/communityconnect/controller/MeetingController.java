@@ -97,6 +97,11 @@ public class MeetingController {
         this.meetingService.deleteMeetingByStatusAndDate(status, date);
     }
 
+    @PutMapping(path = "/status/{id}")
+    public void update(@RequestBody int status, @PathVariable("id") String id) {
+            this.meetingService.updateMeetingStatus(id, status);
+    }
+
     //TODO ONLY FOR DEVELOPMENT USE DELETE BEFORE RELEASE
     @DeleteMapping(path = "/clearAll")
     public void deleteAllMeetings() {

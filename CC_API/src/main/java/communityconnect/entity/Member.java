@@ -95,6 +95,12 @@ public class Member {
         this.timeslots.put(date, timeList);
     }
 
+    public void unbookTimeslot(String date, int index, int day) {
+        ArrayList<Float> timeList = this.timeslots.get(date);
+        timeList.set(index, defaultTimeslots[day].get(index));
+        this.timeslots.put(date, timeList);
+    }
+
     public ArrayList<String> getMeetingIDs() {
         return meetingIDs;
     }

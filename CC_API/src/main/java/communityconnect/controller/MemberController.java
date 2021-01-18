@@ -2,7 +2,6 @@ package communityconnect.controller;
 
 import communityconnect.entity.Meeting;
 import communityconnect.entity.Member;
-import communityconnect.entity.MemberLogin;
 import communityconnect.entity.Timeslot;
 import communityconnect.exception.ApiRequestException;
 import communityconnect.service.MemberService;
