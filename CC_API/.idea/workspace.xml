@@ -22,7 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8da3ba8-fe78-4d32-8725-62fd1e5d41c5" name="Default Changelist" comment="Added status endpoint" />
+    <list default="true" id="a8da3ba8-fe78-4d32-8725-62fd1e5d41c5" name="Default Changelist" comment="Added status endpoint">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/entity/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/communityconnect/service/MeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/communityconnect/service/MeetingService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,5 +99,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="101" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1611004613841" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1611009152534">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1611009152534" />
   </component>
 </project>

@@ -34,7 +34,14 @@ public class MeetingService {
     }
 
     public void insertMeeting(Meeting meeting) {
+        Member member = this.memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this ID"));
         this.meetingRepo.insert(meeting);
+        Meeting newMeeting = this.meetingRepo.findByName(meeting.getName()).orElseThrow(() ->
+                new ApiRequestException("Internal Error"));
+        member.addMeetingID(newMeeting.getId());
+        this.memberRepo.save(member);
+
     }
 
     public List<Meeting> getAll() {

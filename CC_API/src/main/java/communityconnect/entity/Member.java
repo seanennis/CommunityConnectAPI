@@ -40,6 +40,7 @@ public class Member {
         this.name = name;
         this.defaultTimeslots = defaultTimeslots;
         this.timeslots = generateTimeslots(defaultTimeslots);
+        this.meetingIDs = new ArrayList<>();
         this.active = false;
     }
 
