@@ -34,14 +34,7 @@ public class MeetingService {
     }
 
     public void insertMeeting(Meeting meeting) {
-        Member member = this.memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
-                new ApiRequestException("Cannot find member with this ID"));
         this.meetingRepo.insert(meeting);
-        Meeting newMeeting = this.meetingRepo.findByName(meeting.getName()).orElseThrow(() ->
-                new ApiRequestException("Internal Error"));
-        member.addMeetingID(newMeeting.getId());
-        this.memberRepo.save(member);
-
     }
 
     public List<Meeting> getAll() {
@@ -144,13 +137,18 @@ public class MeetingService {
     public void updateMeetingStatus(String id, int status) {
         Meeting meeting = this.meetingRepo.findById(id).orElseThrow(() ->
                 new ApiRequestException("Cannot find meeting with this ID"));
+        Member member = this.memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
+                new ApiRequestException("Cannot find member with this ID"));
         meeting.setStatus(status);
         meetingRepo.save(meeting);
 
+        // if meeting is accepted, add to members list of meeting IDs
+        if(status == 1) {
+            member.addMeetingID(meeting.getId());
+            this.memberRepo.save(member);
+        }
         // if meeting is rejected, frees up timeslot
-        if(status == 2) {
-            Member member = this.memberRepo.findById(meeting.getMemberId()).orElseThrow(() ->
-                    new ApiRequestException("Cannot find member with this ID"));
+        else if(status == 2) {
             String date = meeting.getDate();
             ArrayList<Float> times = member.getTimeslots().get(date);
             List<Integer> intTimes = times.stream().map(Float::intValue).collect(Collectors.toList());
